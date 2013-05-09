@@ -85,6 +85,9 @@
     <ProjectReference Include="..\ToolBoxPCL\ToolBoxPCL.vcxproj">
       <Project>{dd623584-ad9f-472b-99f3-f68a75a51532}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\ToolBoxXML\ToolBoxXML.vcxproj">
+      <Project>{dacd7471-1f50-4b83-9d27-c4c887d6b16f}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\ToolBox\ToolBox.vcxproj">
       <Project>{312ab08b-3452-486d-9436-bb338bb59bbd}</Project>
     </ProjectReference>
