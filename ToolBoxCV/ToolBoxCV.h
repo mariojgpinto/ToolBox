@@ -22,7 +22,7 @@ namespace ToolBoxCV{
 			std::string* time_elapsed_milliseconds_str();
 
 		private:
-			int asd;
+			double _first_tick;
 	};
 
 	bool in_range(cv::Point* point, int width = 640, int height = 480);
