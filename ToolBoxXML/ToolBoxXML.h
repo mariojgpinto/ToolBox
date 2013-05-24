@@ -18,10 +18,12 @@ namespace ToolBoxXML{
 	bool cv_add_size(tinyxml2::XMLElement* elem, cv::Size *size, char* name = 0);
 	bool cv_add_point(tinyxml2::XMLElement* elem, cv::Point *point, char* name = 0);
 	bool cv_add_point(tinyxml2::XMLElement* elem, cv::Point3f *point, char* name = 0);
+	bool cv_add_mat_double(tinyxml2::XMLElement* elem, tinyxml2::XMLDocument* doc, cv::Mat *mat);
 
 	bool cv_read_size(tinyxml2::XMLElement* elem, cv::Size *size, char* name = 0);
 	bool cv_read_point(tinyxml2::XMLElement* elem, cv::Point *point, char* name = 0);
 	bool cv_read_point(tinyxml2::XMLElement* elem, cv::Point3f *point, char* name = 0);
+	bool cv_read_mat_double(tinyxml2::XMLElement* elem, cv::Mat& mat);
 
 	//OPENCV IMAGE
 	bool cv_save_image(tinyxml2::XMLElement* image_root, tinyxml2::XMLElement* image_elem, char* main_path, char* image_name, cv::Mat& image);

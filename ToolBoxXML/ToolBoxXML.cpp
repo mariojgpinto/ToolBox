@@ -218,6 +218,36 @@ namespace ToolBoxXML{
 		return true;
 	}
 
+	bool cv_add_mat_double(tinyxml2::XMLElement* elem, tinyxml2::XMLDocument* doc, cv::Mat *mat){
+		if(!elem || !mat) return false;
+
+		if(!mat->cols || !mat->rows) return false;
+
+		char mat_str[256];
+		strcpy_s(mat_str,_X_CV_MAT);
+
+		elem->SetAttribute(_X_CV_MAT_ROWS,mat->rows);
+		elem->SetAttribute(_X_CV_MAT_COLS,mat->cols);
+
+		//_matrix.ptr<double>(0)[0] = vec_1.val[0];
+		for(int row = 0 ; row < mat->rows ; row++){
+			char elem_row_str[8];
+			sprintf_s(elem_row_str,"%s%d",_X_CV_MAT_ATT_ROWS,row);
+			tinyxml2::XMLElement* elem_row = doc->NewElement(elem_row_str);
+
+			for(int col = 0 ; col < mat->cols ; col++){
+				char att_col_str[8];
+				sprintf_s(att_col_str,"%s%d",_X_CV_MAT_ATT_COLS,col);
+
+				elem_row->SetAttribute(att_col_str,mat->ptr<double>(row)[col]);
+			}
+
+			elem->LinkEndChild(elem_row);
+		}
+		
+		return true;
+	}
+
 
 	bool cv_read_size(tinyxml2::XMLElement* elem, cv::Size *size, char* name){
 		//size = NULL;
@@ -321,6 +351,53 @@ namespace ToolBoxXML{
 
 		return true;
 	}	
+
+		bool cv_read_mat_double(tinyxml2::XMLElement* elem, cv::Mat& mat){
+		if(!elem) return false;
+
+		int error = 0; 
+		int rows,cols;
+
+		char mat_str[256];
+		strcpy_s(mat_str,_X_CV_MAT);
+
+		error += elem->QueryIntAttribute(_X_CV_MAT_ROWS,&rows);
+		error += elem->QueryIntAttribute(_X_CV_MAT_COLS,&cols);
+
+		if(error) return false;
+
+		mat.create(rows,cols,CV_64FC1);
+		if(!mat.data) return false;
+
+		for(int r = 0 ; r < rows ; r++){
+			char elem_row_str[8];
+			sprintf_s(elem_row_str,"%s%d",_X_CV_MAT_ATT_ROWS,r);
+			
+			tinyxml2::XMLElement* row_elem = elem->FirstChildElement(elem_row_str);
+
+			if(row_elem){
+				for(int c = 0 ; c < cols ; c++){
+					char att_col_str[8];
+					sprintf_s(att_col_str,"%s%d",_X_CV_MAT_ATT_COLS,c);
+					double value;
+					error = 0;
+
+					error = row_elem->QueryDoubleAttribute(att_col_str,&value);
+
+					mat.ptr<double>(r)[c] = value;
+
+					if(error)
+						return false;
+				}
+			}
+			else
+				return false;
+		}
+		
+		return true;
+	}
+
+
 	//-----------------------------------------------------------------------------
 	// OPENCV IMAGES
 	//-----------------------------------------------------------------------------
