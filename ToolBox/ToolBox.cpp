@@ -25,6 +25,13 @@ namespace ToolBox {
 
 	}
 	
+	void Plane::set(double a, double b, double c, double d){
+		this->_a = a;
+		this->_b = b;
+		this->_c = c;
+		this->_d = d;
+	}
+
 	double Plane::distance_to_plane(double x, double y, double z){
 		double v = _a*x + _b*y + _c*z + _d;
 		v /= sqrt(_a*_a + _b*_b + _c*_c);
