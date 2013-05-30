@@ -32,14 +32,17 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\..\PropertySheets\OPENCV_242_DEBUG.props" />
-    <Import Project="..\..\..\PropertySheets\BOOST_DEBUG.props" />
-    <Import Project="..\..\..\PropertySheets\EIGEN_DEBUG.props" />
     <Import Project="..\..\..\PropertySheets\PCL_DEBUG.props" />
+    <Import Project="..\..\..\PropertySheets\EIGEN.props" />
+    <Import Project="..\..\..\PropertySheets\BOOST.props" />
+    <Import Project="..\..\..\PropertySheets\OPENCV_245_DEBUG.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\..\PropertySheets\INCLUDE_MYLIB.props" />
+    <Import Project="..\..\..\PropertySheets\PCL_RELEASE.props" />
+    <Import Project="..\..\..\PropertySheets\EIGEN.props" />
+    <Import Project="..\..\..\PropertySheets\BOOST.props" />
+    <Import Project="..\..\..\PropertySheets\OPENCV_245_RELEASE.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -83,7 +86,7 @@
       <Project>{129ba56f-fd94-4dcf-a51b-f6fc3c997d18}</Project>
     </ProjectReference>
     <ProjectReference Include="..\ToolBoxPCL\ToolBoxPCL.vcxproj">
-      <Project>{dd623584-ad9f-472b-99f3-f68a75a51532}</Project>
+      <Project>{d694191c-f374-40b7-b800-866d442b9696}</Project>
     </ProjectReference>
     <ProjectReference Include="..\ToolBoxXML\ToolBoxXML.vcxproj">
       <Project>{dacd7471-1f50-4b83-9d27-c4c887d6b16f}</Project>
@@ -94,14 +97,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="TBPCL.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="TBPCL.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

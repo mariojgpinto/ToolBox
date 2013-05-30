@@ -4,7 +4,7 @@
 #include <opencv2\opencv.hpp>
 
 namespace ToolBoxCV{
-	class Timer{
+	class __declspec(dllexport) Timer{
 		public:
 			Timer();
 			~Timer();
@@ -25,7 +25,7 @@ namespace ToolBoxCV{
 			double _first_tick;
 	};
 
-	bool in_range(cv::Point* point, int width = 640, int height = 480);
+	__declspec(dllexport) bool in_range(cv::Point* point, int width = 640, int height = 480);
 }
 
 #endif

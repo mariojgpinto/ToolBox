@@ -2,7 +2,7 @@
 #define _TOOLBOX
 
 namespace ToolBox{
-	class Plane{
+	class __declspec(dllexport) Plane{
 		public:	
 			Plane(double a = 0, double b = 0, double c = 0, double d = 0);
 			Plane(double n_x, double n_y, double n_z, double p_x, double p_y, double p_z);
