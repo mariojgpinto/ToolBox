@@ -87,6 +87,11 @@
   <ItemGroup>
     <ClInclude Include="ToolBoxCV.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ToolBox\ToolBox.vcxproj">
+      <Project>{312ab08b-3452-486d-9436-bb338bb59bbd}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
