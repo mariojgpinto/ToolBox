@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ToolBoxPCL", "ToolBoxPCL\ToolBoxPCL.vcxproj", "{D694191C-F374-40B7-B800-866D442B9696}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ToolBoxQT", "ToolBoxQT\ToolBoxQT.vcxproj", "{D3D05CDD-BC66-487E-80A4-F68E1DC26EE2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -39,6 +41,10 @@ Global
 		{D694191C-F374-40B7-B800-866D442B9696}.Debug|Win32.Build.0 = Debug|Win32
 		{D694191C-F374-40B7-B800-866D442B9696}.Release|Win32.ActiveCfg = Release|Win32
 		{D694191C-F374-40B7-B800-866D442B9696}.Release|Win32.Build.0 = Release|Win32
+		{D3D05CDD-BC66-487E-80A4-F68E1DC26EE2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D3D05CDD-BC66-487E-80A4-F68E1DC26EE2}.Debug|Win32.Build.0 = Debug|Win32
+		{D3D05CDD-BC66-487E-80A4-F68E1DC26EE2}.Release|Win32.ActiveCfg = Release|Win32
+		{D3D05CDD-BC66-487E-80A4-F68E1DC26EE2}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -28,4 +28,4 @@ namespace ToolBoxCV{
 	__declspec(dllexport) bool in_range(cv::Point* point, int width = 640, int height = 480);
 }
 
-#endif
+#endif//_TOOLBOX_CV
