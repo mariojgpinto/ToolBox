@@ -8,7 +8,7 @@ namespace ToolBox{
 			Plane(double n_x, double n_y, double n_z, double p_x, double p_y, double p_z);
 			~Plane();
 
-			void set(double a, double b, double c, double d);
+			inline void set(double a, double b, double c, double d);
 			double distance_to_plane(double x, double y, double z);
 			inline void get_normal(double *x, double *y, double *z);
 

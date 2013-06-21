@@ -26,6 +26,7 @@ namespace ToolBoxCV{
 	};
 
 	__declspec(dllexport) bool in_range(cv::Point* point, int width = 640, int height = 480);
+	__declspec(dllexport) double fitt_image(cv::Mat& orig, cv::Mat& out, int out_width = 640, int out_height = 480, cv::Rect* roi_out = 0);
 }
 
 #endif//_TOOLBOX_CV
