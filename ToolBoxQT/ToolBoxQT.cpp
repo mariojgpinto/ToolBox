@@ -163,6 +163,18 @@ namespace ToolBoxQT{
 		return geometryUpdated;
 	}
 
+	void CVWidget :: setImage(const cv::Mat& im){
+		if(im.type() == CV_8UC3){
+			setImage((cv::Mat3b)im);
+		} else
+		if(im.type() == CV_8UC1){
+			setImage((cv::Mat1b)im);
+		} else
+		if(im.type() == CV_32FC1){
+			setImage((cv::Mat1f)im);
+		}
+	}
+
 	void CVWidget :: setImage(const cv::Mat1b& im)
 	{
 		if (setImage(m_image, im))

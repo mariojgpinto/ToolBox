@@ -43,6 +43,7 @@ namespace ToolBoxQT{
 
 			void setImage(const QImage& im);
 			void setImage(const cv::Mat1f& im, double* min_val = 0, double* max_val = 0);
+			void setImage(const cv::Mat& im);
 			void setImage(const cv::Mat1b& im);
 			void setImage(const cv::Mat3b& im);
 
