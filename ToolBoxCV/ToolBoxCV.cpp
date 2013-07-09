@@ -39,13 +39,13 @@ namespace ToolBoxCV{
 	 *
 	 * @param[in]	orig
 	 *				.
-	 * @param[out]	orig
+	 * @param[out]	out
 	 *				.
-	 * @param[in]	orig
+	 * @param[in]	out_width
 	 *				.
-	 * @param[in]	orig
+	 * @param[in]	out_height
 	 *				.
-	 * @param[out]	orig
+	 * @param[out]	roi_out
 	 *				.
 	 *
 	 * @return	
@@ -96,5 +96,40 @@ namespace ToolBoxCV{
 		temp.copyTo(out(*roi_out));
 
 		return ratio;
+	}
+
+	/**
+	 * @brief	
+	 * @details	
+	 *
+	 * @param[in]	point
+	 *				
+	 * @param[in]	points
+	 *
+	 *
+	 * @return
+	 * 
+	 */
+	bool inside(cv::Point* point, std::vector<cv::Point*>* points){
+		if(!point || !points || !points->size()) return false;
+
+		int max_x = -INT_MAX;
+		int max_y = -INT_MAX;
+		int min_x = INT_MAX;
+		int min_y = INT_MAX;
+
+		for(unsigned int i = 0 ; i < points->size() ; ++i){
+			if(points->at(i)->x > max_x)
+				max_x = points->at(i)->x;
+			if(points->at(i)->x < min_x)
+				min_x = points->at(i)->x;
+			if(points->at(i)->y > max_y)
+				max_y = points->at(i)->y;
+			if(points->at(i)->y < min_y)
+				min_y = points->at(i)->y;
+		}
+
+		if(point->x > max_x || point->x < min_x || point->y > max_y || point->y < min_y) return false;
+		return true;
 	}
 }

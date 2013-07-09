@@ -1,4 +1,24 @@
-//#include "TBPCL.h"
+#include "../ToolBoxCV/ToolBoxCV.h"
+
+int main(int argc, char* argv[]){
+	std::vector<cv::Point*>* points = new std::vector<cv::Point*>();
+	points->push_back(new cv::Point(0,0));
+	points->push_back(new cv::Point(2,0));
+	points->push_back(new cv::Point(2,2));
+	points->push_back(new cv::Point(0,2));
+
+
+	cv::Point* point = new cv::Point(0,0);
+
+	bool result = ToolBoxCV::inside(point,points);
+
+	printf("%s\n",(result) ? "true" :"false");
+	getchar();
+
+	return 0;
+}
+
+/*//#include "TBPCL.h"
 
 #include <iostream>
 #include <pcl/ModelCoefficients.h>
@@ -72,12 +92,6 @@ int
                                                << cloud.points[inliers->indices[i]].z << std::endl;
 
   return (0);
-}
+}*/
 
 
-//int main(int argc, char* argv[]){
-//	
-//	main_PCL(argc,argv);
-//
-//	return 0;
-//}
