@@ -15,6 +15,8 @@ namespace ToolBox{
 		public:
 			double _a, _b, _c, _d;
 	};
+
+	__int64 __declspec(dllexport)currentTimeMillis();
 }
 
 #endif

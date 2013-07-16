@@ -1,6 +1,8 @@
 #include "ToolBox.h"
 
 #include <math.h>
+#include <windows.h>
+#include <cstring>
 
 //-----------------------------------------------------------------------------
 // OTHER FUNCTION
@@ -40,5 +42,22 @@ namespace ToolBox {
 
 	void Plane::get_normal(double *x, double *y, double *z){
 		*x = _a; *y = _b; *z = _c;
+	}
+
+
+
+
+
+	
+	__int64 currentTimeMillis()
+	{
+		static const __int64 magic = 116444736000000000; // 1970/1/1
+		SYSTEMTIME st;
+		 GetSystemTime(&st);
+		 FILETIME   ft;
+		SystemTimeToFileTime(&st,&ft); // in 100-nanosecs...
+		 __int64 t;
+		  memcpy(&t,&ft,sizeof t);
+	  return (t - magic)/10000; // scale to millis.
 	}
 }

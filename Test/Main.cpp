@@ -1,4 +1,5 @@
 #include "../ToolBoxCV/ToolBoxCV.h"
+#include "../ToolBox/ToolBox.h"
 
 int main(int argc, char* argv[]){
 	std::vector<cv::Point*>* points = new std::vector<cv::Point*>();
@@ -13,6 +14,10 @@ int main(int argc, char* argv[]){
 	bool result = ToolBoxCV::inside(point,points);
 
 	printf("%s\n",(result) ? "true" :"false");
+
+	printf("\n\n--------------------------\n%llu\n",ToolBox::currentTimeMillis());
+
+
 	getchar();
 
 	return 0;
