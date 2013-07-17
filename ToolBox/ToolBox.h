@@ -2,6 +2,17 @@
 #define _TOOLBOX
 
 namespace ToolBox{
+	class __declspec(dllexport) Color{
+		public:
+			Color();
+			Color(int rr, int gg, int bb){
+				this->r = rr; this->g = gg; this->b = bb;
+			}
+			~Color();
+
+			int r,g,b;
+	};
+
 	class __declspec(dllexport) Plane{
 		public:	
 			Plane(double a = 0, double b = 0, double c = 0, double d = 0);

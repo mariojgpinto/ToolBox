@@ -48,6 +48,6 @@ namespace ToolBoxPCL{
 				cloud.push_back(pcl::PointXYZ(points_in[i].X,points_in[i].Y,points_in[i].Z));
 		}
 
-		return false;
+		return true;
 	}
 }
