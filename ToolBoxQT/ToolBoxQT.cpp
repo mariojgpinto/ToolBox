@@ -64,67 +64,94 @@ namespace ToolBoxQT{
 	}
 
 	bool
-	CVWidget :: setImage(QImage& image, const cv::Mat1b& im)
+	CVWidget :: setImage(QImage& image, cv::Mat1b *im)
 	{
 		bool geometryUpdated = false;
 
-		if (image.width() != im.cols
-				|| image.height() != im.rows)
+		if (image.width() != im->cols
+				|| image.height() != im->rows)
 		{
-			image = QImage(im.cols, im.rows, QImage::Format_RGB32);
+			image = QImage(im->cols, im->rows, QImage::Format_RGB32);
 			geometryUpdated = true;
 		}
 
-		for (int r = 0; r < im.rows; ++r)
+		for (int r = 0; r < im->rows; ++r)
 		{
 			QRgb* ptr = (QRgb*) image.scanLine(r);
-			for (int c = 0; c < im.cols; ++c)
+			const uchar* cv_ptr = im->ptr(r);
+			for (int i = 0; i < im->cols; ++i)
 			{
-				int v = im(r,c);
+				float v = *cv_ptr;
 				*ptr = qRgb(v,v,v);
 				++ptr;
+				++cv_ptr;
 			}
 		}
+
+		//for (int r = 0; r < im->rows; ++r)
+		//{
+		//	QRgb* ptr = (QRgb*) image.scanLine(r);
+		//	for (int c = 0; c < im->cols; ++c)
+		//	{
+		//		int v = (*im)(r,c);
+		//		*ptr = qRgb(v,v,v);
+		//		++ptr;
+		//	}
+		//}
 
 		return geometryUpdated;
 	}
 
 	bool
-	CVWidget :: setImage(QImage& image, const cv::Mat1f& im, double* i_min_val, double* i_max_val)
+	CVWidget :: setImage(QImage& image, cv::Mat1f *im, double* i_min_val, double* i_max_val)
 	{
 		bool geometryUpdated = false;
 
-		if (image.width() != im.cols
-				|| image.height() != im.rows)
+		if (image.width() != im->cols
+				|| image.height() != im->rows)
 		{
-			image = QImage(im.cols, im.rows, QImage::Format_RGB32);
+			image = QImage(im->cols, im->rows, QImage::Format_RGB32);
 			geometryUpdated = true;
 		}
 
-		double min_val, max_val;
-		if (i_min_val && i_max_val)
-		{
-			min_val = *i_min_val;
-			max_val = *i_max_val;
-		}
-		else
-			minMaxLoc(im, &min_val, &max_val);
-		if (min_val == max_val)
-		{
-			image.fill(qRgb(0,0,0));
-			return geometryUpdated;
-		}
+		//double min_val, max_val;
+		//if (i_min_val && i_max_val)
+		//{
+		//	min_val = *i_min_val;
+		//	max_val = *i_max_val;
+		//}
+		//else
+		//	minMaxLoc(*im, &min_val, &max_val);
+		//if (min_val == max_val)
+		//{
+		//	image.fill(qRgb(0,0,0));
+		//	return geometryUpdated;
+		//}
 
-		for (int r = 0; r < im.rows; ++r)
+		//for (int r = 0; r < im->rows; ++r)
+		//{
+		//	QRgb* ptr = (QRgb*) image.scanLine(r);
+		//	const float* cv_ptr = im->ptr<float>(r);
+		//	for (int c = 0; c < im->cols; ++c)
+		//	{
+		//		int v = 255*(*cv_ptr-min_val)/(max_val-min_val);
+		//		v = saturate_to_range(v, 0, 255);
+		//		int rgb = (0xff << 24) + (v << 16) + (v << 8) + v;
+		//		*ptr = rgb;
+		//		++ptr;
+		//		++cv_ptr;
+		//	}
+		//}
+		
+		for (int r = 0; r < im->rows; ++r)
 		{
+			//const uchar* cv_ptr = im->ptr(r);s
 			QRgb* ptr = (QRgb*) image.scanLine(r);
-			const float* cv_ptr = im.ptr<float>(r);
-			for (int c = 0; c < im.cols; ++c)
+			const float* cv_ptr = im->ptr<float>(r);
+			for (int i = 0; i < im->cols; ++i)
 			{
-				int v = 255*(*cv_ptr-min_val)/(max_val-min_val);
-				v = saturate_to_range(v, 0, 255);
-				int rgb = (0xff << 24) + (v << 16) + (v << 8) + v;
-				*ptr = rgb;
+				float v = *cv_ptr;
+				*ptr = qRgb(v,v,v);
 				++ptr;
 				++cv_ptr;
 			}
@@ -134,23 +161,23 @@ namespace ToolBoxQT{
 	}
 
 	bool
-	CVWidget :: setImage(QImage& image, const cv::Mat3b& im)
+	CVWidget :: setImage(QImage& image, cv::Mat3b *im)
 	{
 		bool geometryUpdated = false;
 
 		if (image.isNull()
-				|| image.width() != im.cols
-				|| image.height() != im.rows)
+				|| image.width() != im->cols
+				|| image.height() != im->rows)
 		{
-			image = QImage(im.cols, im.rows, QImage::Format_RGB32);
+			image = QImage(im->cols, im->rows, QImage::Format_RGB32);
 			geometryUpdated = true;
 		}
 
-		for (int r = 0; r < im.rows; ++r)
+		for (int r = 0; r < im->rows; ++r)
 		{
 			QRgb* ptr = (QRgb*) image.scanLine(r);
-			const uchar* cv_ptr = im.ptr(r);
-			for (int i = 0; i < im.cols; ++i)
+			const uchar* cv_ptr = im->ptr(r);
+			for (int i = 0; i < im->cols; ++i)
 			{
 				int rgb = 0xff << 24;
 				rgb |= (*cv_ptr++);
@@ -163,19 +190,19 @@ namespace ToolBoxQT{
 		return geometryUpdated;
 	}
 
-	void CVWidget :: setImage(const cv::Mat& im){
-		if(im.type() == CV_8UC3){
-			setImage((cv::Mat3b)im);
+	void CVWidget :: setImage(cv::Mat *im){
+		if(im->type() == CV_8UC3){
+			setImage((cv::Mat3b*)im);
 		} else
-		if(im.type() == CV_8UC1){
-			setImage((cv::Mat1b)im);
+		if(im->type() == CV_8UC1){
+			setImage((cv::Mat1b*)im);
 		} else
-		if(im.type() == CV_32FC1){
-			setImage((cv::Mat1f)im);
+		if(im->type() == CV_32FC1){
+			setImage((cv::Mat1f*)im);
 		}
 	}
 
-	void CVWidget :: setImage(const cv::Mat1b& im)
+	void CVWidget :: setImage(cv::Mat1b *im)
 	{
 		if (setImage(m_image, im))
 			updateGeometry();
@@ -183,7 +210,7 @@ namespace ToolBoxQT{
 		update();
 	}
 
-	void CVWidget :: setImage(const cv::Mat1f& im, double* i_min_val, double* i_max_val)
+	void CVWidget :: setImage(cv::Mat1f *im, double* i_min_val, double* i_max_val)
 	{
 		if (setImage(m_image, im, i_min_val, i_max_val))
 			updateGeometry();
@@ -191,7 +218,7 @@ namespace ToolBoxQT{
 		update();
 	}
 
-	void CVWidget :: setImage(const cv::Mat3b& im)
+	void CVWidget :: setImage(cv::Mat3b *im)
 	{
 		if (setImage(m_image, im))
 			updateGeometry();

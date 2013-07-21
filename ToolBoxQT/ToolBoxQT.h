@@ -27,9 +27,9 @@ namespace ToolBoxQT{
 			};
 
 		public: // FIXME: Move these where they really belong.
-			static bool setImage(QImage& image, const cv::Mat1f& im, double* min_val = 0, double* max_val = 0);
-			static bool setImage(QImage& image, const cv::Mat1b& im);
-			static bool setImage(QImage& image, const cv::Mat3b& im);
+			static bool setImage(QImage& image, cv::Mat1f *im, double* min_val = 0, double* max_val = 0);
+			static bool setImage(QImage& image, cv::Mat1b *im);
+			static bool setImage(QImage& image, cv::Mat3b *im);
 
 		public:
 			CVWidget(QWidget* parent);
@@ -42,10 +42,10 @@ namespace ToolBoxQT{
 			{ x = m_last_mouse_pos.x(); y = m_last_mouse_pos.y(); }
 
 			void setImage(const QImage& im);
-			void setImage(const cv::Mat1f& im, double* min_val = 0, double* max_val = 0);
-			void setImage(const cv::Mat& im);
-			void setImage(const cv::Mat1b& im);
-			void setImage(const cv::Mat3b& im);
+			void setImage(cv::Mat *im);
+			void setImage(cv::Mat1f *im, double* min_val = 0, double* max_val = 0);
+			void setImage(cv::Mat1b *im);
+			void setImage(cv::Mat3b *im);
 
 			void setPen(QPen q);
 			void setRects(const std::list<cv::Rect>& rects, const cv::Vec3b& color = cv::Vec3b(0,0,0));
