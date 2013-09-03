@@ -31,6 +31,7 @@ namespace ToolBoxXML{
 	__declspec(dllexport)bool cv_load_image_xml(tinyxml2::XMLElement* root, char* elem, cv::Mat1b& out_image);
 	__declspec(dllexport)bool cv_load_image_xml(tinyxml2::XMLElement* root, char* elem, cv::Mat1f& out_image);
 	__declspec(dllexport)bool cv_load_image_xml(tinyxml2::XMLElement* root, char* elem, cv::Mat3b& out_image);
+	__declspec(dllexport)bool cv_load_image_xml(tinyxml2::XMLElement* root, char* elem, cv::Mat& out_image, int flag = 1);
 
 }
 

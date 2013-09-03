@@ -525,4 +525,31 @@ namespace ToolBoxXML{
 			return false;
 		}
 	}
+
+	bool cv_load_image_xml(tinyxml2::XMLElement* root, char* elem, cv::Mat& out_image, int flag){
+		tinyxml2::XMLElement *image = root->FirstChildElement(elem);
+
+		if(image){
+			const char* path = image->Attribute(_X_PATH);
+			if(path){ 
+				FILE * pFile = fopen (path,"r");
+
+				if(pFile){
+					fclose(pFile);
+
+					cv::Mat aux = cv::imread(path,flag);
+					aux.copyTo(out_image);
+
+					return true;
+				}
+				else
+					return false;
+			}
+			else
+				return false;
+		}
+		else{
+			return false;
+		}
+	}
 }
