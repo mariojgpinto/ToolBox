@@ -27,6 +27,14 @@ namespace ToolBox {
 
 	}
 	
+	void Plane::set_normalized(double a, double b, double c, double d){
+		double v = sqrt(a * a + b * b + c * c);
+		this->_a = a/v;
+		this->_b = b/v;
+		this->_c = c/v;
+		this->_d = d/v;
+	}
+
 	void Plane::set(double a, double b, double c, double d){
 		this->_a = a;
 		this->_b = b;

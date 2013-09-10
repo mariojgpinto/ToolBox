@@ -20,6 +20,7 @@ namespace ToolBox{
 			~Plane();
 
 			inline void set(double a, double b, double c, double d);
+			void set_normalized(double a, double b, double c, double d);
 			double distance_to_plane(double x, double y, double z);
 			inline void get_normal(double *x, double *y, double *z);
 
