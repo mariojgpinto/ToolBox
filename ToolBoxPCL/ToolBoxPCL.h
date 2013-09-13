@@ -9,6 +9,8 @@
 
 namespace ToolBoxPCL{
 	__declspec(dllexport) bool write_to_pcd_file(std::vector<cv::Point3f*>* points, char* file_name);
+	__declspec(dllexport) bool write_to_pcd_file(pcl::PointCloud<pcl::PointXYZ>& points, char* file_name);
+	__declspec(dllexport) bool write_to_pcd_file(pcl::PointCloud<pcl::PointXYZRGB>& points, char* file_name);
 
 	__declspec(dllexport) bool calc_plane_from_points(std::vector<cv::Point3f*>* points, double* a, double* b, double* c, double* d, double dist_threshold = 0.01);
 

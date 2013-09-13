@@ -66,6 +66,65 @@ namespace ToolBoxPCL{
 		return true;
 	}
 
+	bool write_to_pcd_file(pcl::PointCloud<pcl::PointXYZ>& points, char* file_name){
+		if(points.size() < 3) return false;
+
+		FILE* fp = NULL;
+		fopen_s(&fp, file_name,"w+");
+
+		if(!fp) return false;
+
+		fprintf(fp,"# .PCD v0.7 - Point Cloud Data file format\n");
+		fprintf(fp,"VERSION 0.7\n");
+		fprintf(fp,"FIELDS x y z\n");
+		fprintf(fp,"SIZE 4 4 4\n");
+		fprintf(fp,"TYPE F F F\n");
+		fprintf(fp,"COUNT 1 1 1\n");
+		fprintf(fp,"WIDTH %d\n", points.size());
+		fprintf(fp,"HEIGHT 1\n");
+		fprintf(fp,"VIEWPOINT 0 0 0 1 0 0 0\n");
+		fprintf(fp,"POINTS %d\n", points.size());
+		fprintf(fp,"DATA ascii\n");
+
+		for(int k = 0 ; k < (int)points.size() ; k++){
+			fprintf(fp,"%f %f %f\n", points.at(k).x, points.at(k).y,points.at(k).z);
+		}
+
+		fclose(fp);
+
+		return true;
+	}
+
+	bool write_to_pcd_file(pcl::PointCloud<pcl::PointXYZRGB>& points, char* file_name){
+		if(points.size() < 3) return false;
+
+		FILE* fp = NULL;
+		fopen_s(&fp, file_name,"w+");
+
+		if(!fp) return false;
+
+		fprintf(fp,"# .PCD v0.7 - Point Cloud Data file format\n");
+		fprintf(fp,"VERSION 0.7\n");
+		fprintf(fp,"FIELDS x y z r g b\n");
+		fprintf(fp,"SIZE 4 4 4 1 1 1\n");
+		fprintf(fp,"TYPE F F F I I I\n");
+		fprintf(fp,"COUNT 1 1 1 1 1 1\n");
+		fprintf(fp,"WIDTH %d\n", points.size());
+		fprintf(fp,"HEIGHT 1\n");
+		fprintf(fp,"VIEWPOINT 0 0 0 1 0 0 0\n");
+		fprintf(fp,"POINTS %d\n", points.size());
+		fprintf(fp,"DATA ascii\n");
+
+		for(int k = 0 ; k < (int)points.size() ; k++){
+			fprintf(fp,"%f %f %f %d %d %d\n",	points.at(k).x, points.at(k).y, points.at(k).z,
+												points.at(k).r, points.at(k).g, points.at(k).b);
+		}
+
+		fclose(fp);
+
+		return true;
+	}
+
 	bool calc_plane_from_points(std::vector<cv::Point3f*>* points, double* a, double* b, double* c, double* d, double dist_threshold){
 		if(!points || points->size() < 3) return false;
 
