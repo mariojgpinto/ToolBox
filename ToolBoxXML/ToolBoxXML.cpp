@@ -218,6 +218,52 @@ namespace ToolBoxXML{
 		return true;
 	}
 
+	/**
+	 * @brief	Adds a cv::Rect to the XML element.
+	 * @details	.
+	 *
+	 * @param	elem
+	 *			XML element where the attribute will be added.
+	 *
+	 * @param	size
+	 *			Attribute to be added.
+	 *
+	 * @param	name
+	 *			Name of the attribute to be added (not necessary).
+	 */
+	bool cv_add_rect(tinyxml2::XMLElement* elem, cv::Rect *rect, char* name){
+		if(!elem || !rect) return false;
+
+		char rect_x[256]; 
+		char rect_y[256]; 
+		char rect_w[256]; 
+		char rect_h[256]; 
+
+		if(name){
+			strcpy(rect_x,name); strcat(rect_x,"_");
+			strcpy(rect_y,name); strcat(rect_y,"_");
+			strcpy(rect_w,name); strcat(rect_w,"_");
+			strcpy(rect_h,name); strcat(rect_h,"_");
+			strcat(rect_x,_X_CV_RECT_X);
+			strcat(rect_y,_X_CV_RECT_Y);
+			strcat(rect_w,_X_CV_RECT_W);
+			strcat(rect_h,_X_CV_RECT_H);
+		}
+		else{
+			strcat(rect_x,_X_CV_RECT_X);
+			strcat(rect_y,_X_CV_RECT_Y);
+			strcat(rect_w,_X_CV_RECT_W);
+			strcat(rect_h,_X_CV_RECT_H);
+		}
+
+		elem->SetAttribute(rect_x, rect->x);
+		elem->SetAttribute(rect_y, rect->y);
+		elem->SetAttribute(rect_w, rect->width);
+		elem->SetAttribute(rect_h, rect->height);
+
+		return true;
+	}
+
 	bool cv_add_mat_double(tinyxml2::XMLElement* elem, tinyxml2::XMLDocument* doc, cv::Mat *mat){
 		if(!elem || !mat) return false;
 
@@ -247,6 +293,9 @@ namespace ToolBoxXML{
 		
 		return true;
 	}
+
+	
+
 
 
 	bool cv_read_size(tinyxml2::XMLElement* elem, cv::Size *size, char* name){
@@ -352,7 +401,51 @@ namespace ToolBoxXML{
 		return true;
 	}	
 
-		bool cv_read_mat_double(tinyxml2::XMLElement* elem, cv::Mat& mat){
+	bool cv_read_rect(tinyxml2::XMLElement* elem, cv::Rect* rect, char* name){
+		if(!elem || !rect) return false;
+
+		int error = 0; 
+		double x,y,w,h;
+
+		char rect_x[256]; 
+		char rect_y[256]; 
+		char rect_w[256]; 
+		char rect_h[256];
+
+		if(name){
+			strcpy(rect_x,name); strcat(rect_x,"_");
+			strcpy(rect_y,name); strcat(rect_y,"_");
+			strcpy(rect_w,name); strcat(rect_w,"_");
+			strcpy(rect_h,name); strcat(rect_h,"_");
+			strcat(rect_x,_X_CV_RECT_X);
+			strcat(rect_y,_X_CV_RECT_Y);
+			strcat(rect_w,_X_CV_RECT_W);
+			strcat(rect_h,_X_CV_RECT_H);
+		}
+		else{
+			strcat(rect_x,_X_CV_RECT_X);
+			strcat(rect_y,_X_CV_RECT_Y);
+			strcat(rect_w,_X_CV_RECT_W);
+			strcat(rect_h,_X_CV_RECT_H);
+		}
+
+		error += elem->QueryDoubleAttribute(rect_x,&x);
+		error += elem->QueryDoubleAttribute(rect_y,&y);
+		error += elem->QueryDoubleAttribute(rect_w,&w);
+		error += elem->QueryDoubleAttribute(rect_h,&h);
+
+		if(error) return false;
+
+		//rect = new cv::Rect((float)x,(float)y,(float)y,(float)h);
+		rect->x = x;
+		rect->y = y;
+		rect->width = w;
+		rect->height = h;
+
+		return true;
+	}
+
+	bool cv_read_mat_double(tinyxml2::XMLElement* elem, cv::Mat& mat){
 		if(!elem) return false;
 
 		int error = 0; 
@@ -551,5 +644,98 @@ namespace ToolBoxXML{
 		else{
 			return false;
 		}
+	}
+
+	//-----------------------------------------------------------------------------
+	// TOOLBOX
+	//-----------------------------------------------------------------------------
+	/**
+	 * @brief	Adds a ToolBox::Plane to the XML element.
+	 * @details	.
+	 *
+	 * @param	elem
+	 *			XML element where the attribute will be added.
+	 *
+	 * @param	plane
+	 *			Attribute to be added.
+	 *
+	 * @param	name
+	 *			Name of the attribute to be added (not necessary).
+	 */
+	bool toolbox_add_plane(tinyxml2::XMLElement* elem, ToolBox::Plane* plane, char* name){
+		if(!elem || !plane) return false;
+
+		char plane_a[256]; 
+		char plane_b[256]; 
+		char plane_c[256]; 
+		char plane_d[256]; 
+
+		if(name){
+			strcpy(plane_a,name); strcat(plane_a,"_");
+			strcpy(plane_b,name); strcat(plane_b,"_");
+			strcpy(plane_c,name); strcat(plane_c,"_");
+			strcpy(plane_d,name); strcat(plane_d,"_");
+			strcat(plane_a,_X_TOOLBOX_PLANE_A);
+			strcat(plane_b,_X_TOOLBOX_PLANE_B);
+			strcat(plane_c,_X_TOOLBOX_PLANE_C);
+			strcat(plane_d,_X_TOOLBOX_PLANE_D);
+		}
+		else{
+			strcat(plane_a,_X_CV_RECT_X);
+			strcat(plane_b,_X_CV_RECT_Y);
+			strcat(plane_c,_X_CV_RECT_W);
+			strcat(plane_d,_X_CV_RECT_H);
+		}
+
+		elem->SetAttribute(plane_a, plane->_a);
+		elem->SetAttribute(plane_b, plane->_b);
+		elem->SetAttribute(plane_c, plane->_c);
+		elem->SetAttribute(plane_d, plane->_d);
+
+		return true;
+	}
+
+	bool toolbox_read_plane(tinyxml2::XMLElement* elem, ToolBox::Plane* plane, char* name){
+		if(!elem || !plane) return false;
+
+		int error = 0; 
+		double a,b,c,d;
+
+		char plane_a[256]; 
+		char plane_b[256]; 
+		char plane_c[256]; 
+		char plane_d[256]; 
+
+		if(name){
+			strcpy(plane_a,name); strcat(plane_a,"_");
+			strcpy(plane_b,name); strcat(plane_b,"_");
+			strcpy(plane_c,name); strcat(plane_c,"_");
+			strcpy(plane_d,name); strcat(plane_d,"_");
+			strcat(plane_a,_X_TOOLBOX_PLANE_A);
+			strcat(plane_b,_X_TOOLBOX_PLANE_B);
+			strcat(plane_c,_X_TOOLBOX_PLANE_C);
+			strcat(plane_d,_X_TOOLBOX_PLANE_D);
+		}
+		else{
+			strcat(plane_a,_X_CV_RECT_X);
+			strcat(plane_b,_X_CV_RECT_Y);
+			strcat(plane_c,_X_CV_RECT_W);
+			strcat(plane_d,_X_CV_RECT_H);
+		}
+
+		error += elem->QueryDoubleAttribute(plane_a,&a);
+		error += elem->QueryDoubleAttribute(plane_b,&b);
+		error += elem->QueryDoubleAttribute(plane_c,&c);
+		error += elem->QueryDoubleAttribute(plane_d,&d);
+
+		if(error) return false;
+
+		//plane = new ToolBox::Plane();
+		plane->_a = a;
+		plane->_b = b;
+		plane->_c = c;
+		plane->_d = d;
+
+		return true;
 	}
 }
