@@ -10,7 +10,7 @@
 		#define TOOLBOX_DLL __declspec(dllexport)
 	#endif
 #else
-	#ifndef
+	#ifndef TOOLBOX_DLL
 		#define TOOLBOX_DLL __declspec(dllimport)
 	#endif
 #endif
