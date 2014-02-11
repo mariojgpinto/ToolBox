@@ -4,9 +4,13 @@
 #pragma warning(disable: 4251) //Disable dll interface warning for std::vector
 
 #ifdef TOOLBOX_DLL_EXPORT
-	#define TOOLBOX_DLL __declspec(dllexport)
+	#ifndef TOOLBOX_DLL
+		#define TOOLBOX_DLL __declspec(dllexport)
+	#endif
 #else
-	#define TOOLBOX_DLL __declspec(dllimport)
+	#ifndef TOOLBOX_DLL
+		#define TOOLBOX_DLL __declspec(dllimport)
+	#endif
 #endif
 
 #include <opencv2/opencv.hpp>

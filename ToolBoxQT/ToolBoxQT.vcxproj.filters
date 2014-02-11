@@ -21,9 +21,15 @@
     <ClInclude Include="ToolBoxQT.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ToolBoxQT_CVWidget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ToolBoxQT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolBoxQT_CVWidget.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

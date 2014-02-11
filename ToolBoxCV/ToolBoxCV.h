@@ -3,8 +3,18 @@
 
 #include <opencv2\opencv.hpp>
 
+#ifdef TOOLBOX_DLL_EXPORT
+	#ifndef TOOLBOX_DLL
+		#define TOOLBOX_DLL __declspec(dllexport)
+	#endif
+#else
+	#ifndef TOOLBOX_DLL
+		#define TOOLBOX_DLL __declspec(dllimport)
+	#endif
+#endif
+
 namespace ToolBoxCV{
-	class __declspec(dllexport) Timer{
+	class TOOLBOX_DLL Timer{
 		public:
 			Timer();
 			~Timer();
@@ -25,10 +35,10 @@ namespace ToolBoxCV{
 			double _first_tick;
 	};
 
-	__declspec(dllexport) bool in_range(cv::Point* point, int width = 640, int height = 480);
-	__declspec(dllexport) double fitt_image(cv::Mat& orig, cv::Mat& out, int out_width = 640, int out_height = 480, cv::Rect* roi_out = 0);
+	TOOLBOX_DLL bool in_range(cv::Point* point, int width = 640, int height = 480);
+	TOOLBOX_DLL double fitt_image(cv::Mat& orig, cv::Mat& out, int out_width = 640, int out_height = 480, cv::Rect* roi_out = 0);
 
-	__declspec(dllexport) bool inside(cv::Point* point, std::vector<cv::Point*>* points);
+	TOOLBOX_DLL bool inside(cv::Point* point, std::vector<cv::Point*>* points);
 }
 
 #endif//_TOOLBOX_CV

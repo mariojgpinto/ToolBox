@@ -549,8 +549,7 @@ namespace ToolBoxXML{
 				if(pFile){
 					fclose(pFile);
 
-					cv::Mat aux = cv::imread(path,0);
-					aux.copyTo(out_image);
+					out_image = cv::Mat(cvLoadImage(path,0));//cv::imread(buff,flag);
 
 					return true;
 				}
@@ -576,8 +575,7 @@ namespace ToolBoxXML{
 				if(pFile){
 					fclose(pFile);
 
-					cv::Mat aux = cv::imread(path,0);
-					aux.copyTo(out_image);
+					out_image = cv::Mat(cvLoadImage(path,0));//cv::imread(buff,flag);;
 
 					return true;
 				}
@@ -603,8 +601,7 @@ namespace ToolBoxXML{
 				if(pFile){
 					fclose(pFile);
 
-					cv::Mat aux = cv::imread(path);
-					aux.copyTo(out_image);
+					out_image = cv::Mat(cvLoadImage(path));//cv::imread(buff,flag);
 
 					return true;
 				}
@@ -625,15 +622,18 @@ namespace ToolBoxXML{
 		if(image){
 			const char* path = image->Attribute(_X_PATH);
 			if(path){ 
+				
 				FILE * pFile = fopen (path,"r");
-
+				
 				if(pFile){
 					fclose(pFile);
+					
+					out_image = cv::Mat(cvLoadImage(path,flag));//cv::imread(buff,flag);
 
-					cv::Mat aux = cv::imread(path,flag);
-					aux.copyTo(out_image);
-
-					return true;
+					if(out_image.rows && out_image.cols)
+						return true;
+					else
+						return false;
 				}
 				else
 					return false;

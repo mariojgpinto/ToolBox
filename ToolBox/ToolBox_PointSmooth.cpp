@@ -4,7 +4,7 @@
  * @date	January, 2014
  * @brief	Implementation of the PointSmooth class.
  */
-#include "ToolBox.h"
+#include "ToolBox_PointSmooth.h"
 
 namespace ToolBox {
 
@@ -50,8 +50,21 @@ void PointSmooth::set_method(PointSmooth::METHOD method, int buffer_size){
 		case	PointSmooth::LAST_ENTRY:
 
 			break;
+		
 		case	PointSmooth::METHOD1:
 			this->set_buffer_size(buffer_size);
+			break;
+		
+		case	PointSmooth::METHOD2:
+			this->set_buffer_size(5);
+
+			this->_buffer_height[0] = 0.1;
+			this->_buffer_height[1] = 0.2;
+			this->_buffer_height[2] = 0.4;
+			this->_buffer_height[3] = 0.2;
+			this->_buffer_height[4] = 0.1;
+
+			//this->_buffer_height
 			break;
 		default: break;
 	}
@@ -157,7 +170,17 @@ void PointSmooth::process_method_1(double *xx, double *yy, double *zz){
  * @details	.
  */
 void PointSmooth::process_method_2(double *xx, double *yy, double *zz){
+	Point point;
+	int size = this->_buffer.size();
+	for(int i = 0 ; i < size ; ++i){
+		point.x += this->_buffer[this->_buffer_idx[i]].x * this->_buffer_height[i];
+		point.y += this->_buffer[this->_buffer_idx[i]].y * this->_buffer_height[i];
+		point.z += this->_buffer[this->_buffer_idx[i]].z * this->_buffer_height[i];
+	}
 
+	*xx = point.x;
+	*yy = point.y;
+	*zz = point.z;
 }
 
 
@@ -257,6 +280,9 @@ void PointSmooth::get_processed_position(double *xx, double *yy, double *zz){
 			break;
 		case METHOD1:
 			this->process_method_1(xx,yy,zz);
+			break;
+		case METHOD2:
+			this->process_method_2(xx,yy,zz);
 			break;
 		default: 
 			this->process_last_entry(xx,yy,zz); 

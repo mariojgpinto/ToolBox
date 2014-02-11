@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{312AB08B-3452-486D-9436-BB338BB59BBD}</ProjectGuid>
+    <ProjectGuid>{2D08B538-A6A6-40D7-8C5B-FEA8C6244B6E}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>ToolBox</RootNamespace>
+    <RootNamespace>ToolBoxIO</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -32,24 +32,29 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\..\PropertySheets\OUTPUT_DLL_DEBUG.props" />
+    <Import Project="..\..\..\PropertySheets\BOOST.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\..\PropertySheets\OUTPUT_DLL_RELEASE.props" />
+    <Import Project="..\..\..\PropertySheets\BOOST.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>TOOLBOX_DLL_EXPORT;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TOOLBOX_DLL_EXPORT;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PostBuildEvent>
@@ -66,10 +71,10 @@ copy ..\$(Configuration)\*.dll C:\Dev\External\ToolBox\bin\$(Configuration)\</Co
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>TOOLBOX_DLL_EXPORT;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>TOOLBOX_DLL_EXPORT;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
@@ -81,17 +86,13 @@ copy ..\$(Configuration)\*.dll C:\Dev\External\ToolBox\bin\$(Configuration)\</Co
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
+    <ClInclude Include="ToolBoxIO.h" />
+    <ClInclude Include="ToolBoxIO_TCPServer.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ToolBox.cpp" />
-    <ClCompile Include="ToolBox_PointSmooth.cpp" />
-    <ClCompile Include="ToolBox_StateMachine.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="ToolBox.h" />
-    <ClInclude Include="ToolBox_PointSmooth.h" />
-    <ClInclude Include="ToolBox_StateMachine.h" />
+    <ClCompile Include="ToolBoxIO.cpp" />
+    <ClCompile Include="ToolBoxIO_TCPServer.cpp" />
+    <ClCompile Include="ToolBoxIO_TCPSession.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
