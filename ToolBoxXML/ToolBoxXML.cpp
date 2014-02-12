@@ -549,7 +549,10 @@ namespace ToolBoxXML{
 				if(pFile){
 					fclose(pFile);
 
-					out_image = cv::Mat(cvLoadImage(path,0));//cv::imread(buff,flag);
+					cv::Mat temp = cv::imread(path,0);
+
+					temp.copyTo(out_image);
+					//out_image = cv::imread(path,0);//cv::Mat(cvLoadImage(path,0));
 
 					return true;
 				}
