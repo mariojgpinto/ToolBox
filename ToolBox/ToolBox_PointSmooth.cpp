@@ -40,7 +40,7 @@ PointSmooth::~PointSmooth(){
  * @brief	.
  * @details	.
  */
-void PointSmooth::set_method(PointSmooth::METHOD method, int buffer_size){
+void PointSmooth::set_method(PointSmooth::METHOD method, int buffer_size, double main_weight){
 	if(this->_method == method)
 		return;
 
@@ -48,14 +48,16 @@ void PointSmooth::set_method(PointSmooth::METHOD method, int buffer_size){
 
 	switch(this->_method){
 		case	PointSmooth::LAST_ENTRY:
-
+		{
 			break;
-		
+		}
 		case	PointSmooth::METHOD1:
+		{
 			this->set_buffer_size(buffer_size);
 			break;
-		
+		}
 		case	PointSmooth::METHOD2:
+		{
 			this->set_buffer_size(5);
 
 			this->_buffer_height[0] = 0.1;
@@ -66,6 +68,26 @@ void PointSmooth::set_method(PointSmooth::METHOD method, int buffer_size){
 
 			//this->_buffer_height
 			break;
+		}
+		case	PointSmooth::METHOD3:
+		{
+			this->set_buffer_size(buffer_size);
+
+			this->_buffer_height[0] = main_weight;
+			this->_buffer[0] = Point();
+
+			double rest = 1.0 - main_weight;
+			int n_steps = 1;
+			for(int i = 2 ; i < buffer_size ; ++i) n_steps += i;
+	
+			double step = rest/((double)n_steps);
+
+			for(int i = 1 ; i < buffer_size ; ++i){
+				this->_buffer_height[i] = (buffer_size-i) * step;
+				this->_buffer[i]  = Point();
+			}
+			break;
+		}
 		default: break;
 	}
 }
@@ -80,7 +102,7 @@ void PointSmooth::set_buffer_size(int size){
 
 	this->_buffer_size = size;
 
-	//this->_buffer.resize(this->_buffer_size);
+	this->_buffer.resize(this->_buffer_size);
 	this->_buffer_idx.resize(this->_buffer_size);
 	this->_buffer_height.resize(this->_buffer_size);
 
@@ -282,6 +304,9 @@ void PointSmooth::get_processed_position(double *xx, double *yy, double *zz){
 			this->process_method_1(xx,yy,zz);
 			break;
 		case METHOD2:
+			this->process_method_2(xx,yy,zz);
+			break;
+		case METHOD3:
 			this->process_method_2(xx,yy,zz);
 			break;
 		default: 

@@ -25,7 +25,7 @@ namespace ToolBox{
 
 	class TOOLBOX_DLL Point{
 		public:
-			Point(){x = 0;y = 0;z = 0;};
+			Point(){x = 0.;y = 0.;z = 0.;};
 			~Point(){};
 
 			double x;
@@ -38,14 +38,15 @@ namespace ToolBox{
 			enum METHOD{
 				LAST_ENTRY,
 				METHOD1,
-				METHOD2
+				METHOD2,
+				METHOD3,
 			};
 
 		public:
 			PointSmooth(PointSmooth::METHOD method = LAST_ENTRY, int buffer_size = 1);
 			~PointSmooth();
 
-			void set_method(PointSmooth::METHOD method, int buffer_size = 10);
+			void set_method(PointSmooth::METHOD method, int buffer_size = 10, double main_weight = 0.5);
 			void set_buffer_size(int size);
 			void set_pos_height(int pos, double height);
 
@@ -67,6 +68,7 @@ namespace ToolBox{
 			void process_last_entry(double *xx, double *yy, double *zz);
 			void process_method_1(double *xx, double *yy, double *zz);
 			void process_method_2(double *xx, double *yy, double *zz);
+			void process_method_3(double *xx, double *yy, double *zz);
 
 		public:
 			int						_buffer_size;

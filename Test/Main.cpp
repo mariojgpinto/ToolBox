@@ -4,7 +4,25 @@
 
 
 int main(int argc, char* argv[]){
+	//ToolBox::PointSmooth points;
 
+	//points.set_method(ToolBox::PointSmooth::METHOD3, 5, 0.5);
+
+	//points.add_new_point(1,1,1);
+	//points.add_new_point(1,1,1);
+	//points.add_new_point(1,1,1);
+	//points.add_new_point(1,1,1);
+	//points.add_new_point(1,1,1);
+	//points.add_new_point(1,1,1);
+	//points.add_new_point(1,1,1);
+	//points.add_new_point(1,1,1);
+	//points.add_new_point(1,1,1);
+	//points.add_new_point(1,1,1);
+	//points.add_new_point(1,1,1);
+	//points.add_new_point(10,10,10);
+
+	//double xx,yy,zz;
+	//points.get_processed_position(&xx,&yy,&zz);
 	//std::vector<double> cenas;
 	//cenas.resize(10);
 	//printf("%d\n",cenas[1]);
