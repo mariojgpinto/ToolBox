@@ -34,7 +34,8 @@ namespace ToolBoxIO{
 
 			bool is_connected();
 
-			void add_message(std::string msg);
+			void add_message(std::string msg);			
+			void add_message(int size, void* data);
 
 			void stop_client();
 

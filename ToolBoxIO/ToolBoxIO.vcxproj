@@ -92,7 +92,8 @@ copy ..\$(Configuration)\*.dll C:\Dev\External\ToolBox\bin\$(Configuration)\</Co
   <ItemGroup>
     <ClCompile Include="ToolBoxIO.cpp" />
     <ClCompile Include="ToolBoxIO_TCPServer.cpp" />
-    <ClCompile Include="ToolBoxIO_TCPSession.cpp" />
+    <ClCompile Include="ToolBoxIO_TCPMessageSession.cpp" />
+    <ClCompile Include="ToolBoxIO_TCPImageSession.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

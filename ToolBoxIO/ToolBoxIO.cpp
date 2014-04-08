@@ -116,7 +116,7 @@ void TCPClient::add_message(std::string msg){
 		if(this->_flag_connected){
 			try{
 				size_t request_length = this->_messages[0]->length();
-				boost::asio::write(*this->_socket, boost::asio::buffer(this->_messages[0]->data(), request_length));
+				boost::asio::write(*this->_socket, boost::asio::buffer(this->_messages[0]->data(), request_length), boost::asio::transfer_exactly(request_length));
 			}
 			catch(boost::exception& e){
 				printf("Exception at: TCPClient::add_message\nStopping Client\n");
@@ -126,6 +126,34 @@ void TCPClient::add_message(std::string msg){
 	}
 }
 
+void TCPClient::add_message(int size, void* data){
+	if(this->_threaded){
+		try{
+			printf("Sending Data\n");
+			size_t request_length = size; 
+			//boost::asio::write(*this->_socket, boost::asio::buffer("[START]", 7));
+			boost::asio::write(*this->_socket, boost::asio::buffer(data, request_length));
+			//boost::asio::write(*this->_socket, boost::asio::buffer("[END]", 5));
+		}
+		catch(boost::exception& e){
+			printf("Exception at: TCPClient::add_message2\nStopping Client\n");
+			this->stop_client();
+		}
+	}
+	else{
+		if(this->_flag_connected && size && data){
+			try{
+				//printf("Sending Data\n");
+				size_t request_length = size;
+				boost::asio::write(*this->_socket, boost::asio::buffer(data, request_length));
+			}
+			catch(boost::exception& e){
+				printf("Exception at: TCPClient::add_message2\nStopping Client\n");
+				this->stop_client();
+			}
+		}
+	}
+}
 /**
  * @brief	is_connected().
  * @details is_connected().

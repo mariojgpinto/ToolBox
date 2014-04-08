@@ -18,8 +18,11 @@ namespace ToolBoxIO{
  * @details	.
  */
 TCPServer::TCPServer(int port){
-	this->_port_short = port;
+	this->_port_short = (short)port;
 	this->_host = "localhost";
+
+	this->_image_buffer = malloc(TCPMessageSession::buff_size);
+	this->_image_size = 0;
 
 	this->init_server();
 
@@ -47,13 +50,13 @@ void TCPServer::init_server(){
 	this->_io_service = new boost::asio::io_service();
 	this->_acceptor = new boost::asio::ip::tcp::acceptor(*_io_service, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), this->_port_short));
 
-	TCPSocketSession* next_session = new TCPSocketSession(this->_io_service);
+	TCPMessageSession* next_session = new TCPMessageSession(this->_io_service);
 	this->_acceptor->async_accept(	*next_session->get_socket(),
 									boost::bind(&TCPServer::handle_accept, 
 												this, next_session,
 												boost::asio::placeholders::error));
 
-	std::cout << "Socket Server Initialized on Port " << this->_port << ".\n";
+	std::cout << "Socket Server Initialized on Port " << this->_port_short << ".\n";
 }
 
 /**
@@ -64,11 +67,11 @@ void TCPServer::stop_server(){
 	this->_running = false;
 	this->_condition.notify_all();
 
-	for(int i = 0 ; i < this->_sessions.size() ; ++i){
-		this->_sessions[i]->get_socket()->close();
-		this->_sessions[i]->~TCPSocketSession();
+	for(int i = 0 ; i < this->_message_sessions.size() ; ++i){
+		this->_message_sessions[i]->get_socket()->close();
+		this->_message_sessions[i]->~TCPMessageSession();
 	}
-	this->_sessions.clear();
+	this->_message_sessions.clear();
 
 	this->_io_service->stop();
 }
@@ -77,14 +80,17 @@ void TCPServer::stop_server(){
  * @brief	.
  * @details	.
  */
-void TCPServer::handle_accept(TCPSocketSession* new_session, const boost::system::error_code& error){
+void TCPServer::handle_accept(TCPMessageSession* new_session, const boost::system::error_code& error){
 	if (!error){
-		this->_sessions.push_back(new_session);
-		this->_sessions[this->_sessions.size()-1]->set_id(this->_sessions.size()-1);
-		this->_sessions[this->_sessions.size()-1]->set_output_message_deque(&this->_messages_received);
-		this->_sessions[this->_sessions.size()-1]->start();
+		this->_message_sessions.push_back(new_session);
+		this->_message_sessions[this->_message_sessions.size()-1]->set_id(this->_message_sessions.size()-1);
+		this->_message_sessions[this->_message_sessions.size()-1]->set_output_message_deque(&this->_messages_received);
+		this->_message_sessions[this->_message_sessions.size()-1]->set_output_image_buffer(&this->_image_buffer,&this->_image_size);
+		this->_message_sessions[this->_message_sessions.size()-1]->start();
 
 		this->_condition.notify_all();
+
+		printf("New Session - ID(%d)\n",this->_message_sessions[this->_message_sessions.size()-1]->get_id());
 		//if(this->_message_buffer.size()){
 		//for(int i = 0 ; i < this->_message_buffer.size() ; ++i){
 		//		this->add_message(*this->_message_buffer[i]);
@@ -94,7 +100,7 @@ void TCPServer::handle_accept(TCPSocketSession* new_session, const boost::system
 		//}
 		
 		
-		TCPSocketSession* next_session = new TCPSocketSession(_io_service);
+		TCPMessageSession* next_session = new TCPMessageSession(_io_service);
 		this->_acceptor->async_accept(	*next_session->get_socket(),
 										boost::bind(&TCPServer::handle_accept, this, next_session,
 										boost::asio::placeholders::error));
@@ -139,9 +145,9 @@ void TCPServer::run_maintenance_thread(){
  * @details	.
  */
 void TCPServer::manage_sessions(){
-	for(int i = 0 ; i < this->_sessions.size() ; ++i){
-		if(!this->_sessions[i]->is_connected()){
-			this->_sessions.erase(this->_sessions.begin() + i);
+	for(int i = 0 ; i < this->_message_sessions.size() ; ++i){
+		if(!this->_message_sessions[i]->is_connected()){
+			this->_message_sessions.erase(this->_message_sessions.begin() + i);
 			i--;
 		}
 	}
@@ -155,7 +161,7 @@ void TCPServer::manage_sessions(){
  * @details	.
  */
 void TCPServer::manage_messages(){
-	if(this->_messages.size() && this->_sessions.size()){
+	if(this->_messages.size() && this->_message_sessions.size()){
 		while(this->_messages.size()){
 			if(this->_messages[0].second){
 				this->add_message(*this->_messages[0].second,this->_messages[0].first);
@@ -171,19 +177,19 @@ void TCPServer::manage_messages(){
  * @details	.
  */
 void TCPServer::add_message(std::string msg, int id){
-	if(!this->_sessions.size()){
+	if(!this->_message_sessions.size()){
 		this->add_message_to_queue(msg,id);
 	}
 	else{
 		if(id == -1){
-			for(int i = 0 ; i < this->_sessions.size() ; ++i){
-				this->_sessions[i]->add_message(msg);
+			for(int i = 0 ; i < this->_message_sessions.size() ; ++i){
+				this->_message_sessions[i]->add_message(msg);
 			}
 		}
 		else{
-			if(id >= 0 && id < this->_sessions.size()){
-				if(this->_sessions[id]->is_connected()){
-					this->_sessions[id]->add_message(msg);
+			if(id >= 0 && id < this->_message_sessions.size()){
+				if(this->_message_sessions[id]->is_connected()){
+					this->_message_sessions[id]->add_message(msg);
 				}
 				else{
 					this->add_message_to_queue(msg,id);
@@ -239,6 +245,18 @@ void TCPServer::consume_message(std::string& message){
 			message.assign(this->_messages_received[0].second->data());
 		}
 		this->_messages_received.pop_front();
+	}
+}
+
+int TCPServer::new_image(){
+	return this->_image_size;
+}
+			
+void TCPServer::get_image(void* data){
+	if(data){
+		//this->_image_size
+		memcpy(data,this->_image_buffer,this->_image_size); 
+		this->_image_size = 0;
 	}
 }
 

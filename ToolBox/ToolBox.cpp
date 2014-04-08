@@ -32,7 +32,7 @@ namespace ToolBox {
 		this->_a = a/v;
 		this->_b = b/v;
 		this->_c = c/v;
-		this->_d = d/v;
+		this->_d = d;
 	}
 
 	void Plane::set(double a, double b, double c, double d){

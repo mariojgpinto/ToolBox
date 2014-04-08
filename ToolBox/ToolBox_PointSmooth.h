@@ -37,9 +37,9 @@ namespace ToolBox{
 		public:
 			enum METHOD{
 				LAST_ENTRY,
-				METHOD1,
-				METHOD2,
-				METHOD3,
+				METHOD1, //Mean
+				METHOD2, //Gaussian
+				METHOD3, //Height mean
 			};
 
 		public:

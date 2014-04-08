@@ -29,7 +29,10 @@
     <ClCompile Include="ToolBoxIO_TCPServer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ToolBoxIO_TCPSession.cpp">
+    <ClCompile Include="ToolBoxIO_TCPMessageSession.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolBoxIO_TCPImageSession.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
